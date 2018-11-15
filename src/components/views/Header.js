@@ -1,6 +1,5 @@
 import React , {Component} from 'react'
-//import './App.css';
-//import Products from './Products'
+import { Link } from 'react-router-dom'
 
 class Header extends Component {
   render() {
@@ -10,8 +9,8 @@ class Header extends Component {
 
         <div width="999" height="222" border="0" usemap="#Map" text-align="center" > <h1> Shooping Site </h1></div>
           <ul id="menu">
-            <li><a href="index.html" class="but1_active">Nearby Shops</a></li>
-            <li><a href="index.html" class="but2">my preferred</a></li>
+            <li><Link to ="/" class="but1_active">Nearby Shops</Link></li>
+            <li><Link to ="/myPreferred" class="but2">my preferred</Link></li>
           </ul>
         </div>
       </div>
