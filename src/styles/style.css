@@ -55,6 +55,9 @@ text-decoration:underline;
 background-position:top left;
 background-repeat:no-repeat;
 }
+a:active{
+  {background-image:url(../images/but.gif); text-decoration:none; color:#FFFFFF;}
+}
 #menu .but1_active, #menu .but1:hover{background-image:url(../images/but.gif); text-decoration:none; color:#FFFFFF;}
 #menu .but2_active, #menu .but2:hover{background-image:url(../images/but.gif); text-decoration:none; color:#FFFFFF;}
 #menu .but3_active, #menu .but3:hover{background-image:url(../images/but.gif); text-decoration:none; color:#FFFFFF;}
