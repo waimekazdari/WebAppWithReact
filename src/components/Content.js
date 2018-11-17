@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink, Switch, Route } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import Products from './views/mainPage/Products';
 import myPreferred from './views/myPreferred/products';
 

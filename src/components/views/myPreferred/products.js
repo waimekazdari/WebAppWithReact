@@ -1,6 +1,6 @@
 import React , {Component} from 'react'
 import preferredProdJson from '../../JsonFiles/PreferredProd'
-import PreferredProdList from '../PreferredProdList'
+import PreferredProdList from './PreferredProdList'
 
 
 class Products extends Component {
@@ -11,16 +11,39 @@ class Products extends Component {
     this.state = {
       products : []
     }
+  }
+
+  getPreferredProdList = (preferredProdJson)=>{
+
+    if(!localStorage.PreferredProdLocal){
+      let productsAsArray = Object.keys(preferredProdJson).map((pid)=>
+                      preferredProdJson[pid]);
+      localStorage.PreferredProdLocal= JSON.stringify(productsAsArray);
+    }
+    var parseProducts = JSON.parse(localStorage.PreferredProdLocal);
+    return parseProducts;
 
   }
 
+  changePreferredProd = (products)=>{
+    this.setState(products);
+    console.log(30);
+    console.log(products);
+    var toParse = [];
+    toParse =JSON.parse(localStorage.PreferredProdLocal);
+    toParse[0].products = products;
+    localStorage.PreferredProdLocal=JSON.stringify(toParse);
+  }
   componentWillMount(){
-    let productsAsArray = Object.keys(preferredProdJson).map((pid)=>
-                    preferredProdJson[pid]);
+    var prod = [];
+    prod = this.getPreferredProdList(preferredProdJson);
+    prod = prod[0].products;
+    console.log(prod);
+
     this.setState({
-      products:productsAsArray
+      products:prod
     });
-    console.log(productsAsArray[0].products[1].label);
+
   }
 
     render() {
@@ -28,11 +51,15 @@ class Products extends Component {
 
       return (
 
-              <PreferredProdList  products={products}/>
+              <PreferredProdList
+                changePreferredProd = {this.changePreferredProd}
+                products={products}
+                />
 
       );
     }
 
-  }
+
+}
 
   export default Products;

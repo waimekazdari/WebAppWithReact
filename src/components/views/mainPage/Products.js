@@ -1,7 +1,6 @@
 import React , {Component} from 'react'
 import productsListJson from '../../JsonFiles/Products';
-import ProductList from '../ProductList'
-
+import ProductList from './ProductList'
 
 class Products extends Component {
 
@@ -14,12 +13,30 @@ class Products extends Component {
 
   }
 
-  componentWillMount(){
+getProductsList = (productsListJson)=>{
+
+  if(!localStorage.ProductsLocal){
     let productsAsArray = Object.keys(productsListJson).map((pid)=>
                     productsListJson[pid]);
+    localStorage.ProductsLocal= JSON.stringify(productsAsArray);
+  }
+  var parseProducts = JSON.parse(localStorage.ProductsLocal);
+  return parseProducts;
+
+}
+
+  componentWillMount(){
+    var prod = [];
+    prod = this.getProductsList(productsListJson);
+
     this.setState({
-      products:productsAsArray
+      products:prod
     });
+  }
+
+  changeProducts = (products)=>{
+    this.setState(products);
+      localStorage.ProductsLocal = JSON.stringify(products);
   }
 
     render() {
@@ -27,7 +44,10 @@ class Products extends Component {
 
       return (
 
-              <ProductList  products={products}/>
+              <ProductList
+               products={products}
+               changeProducts = {this.changeProducts}
+               ></ProductList>
 
       );
     }

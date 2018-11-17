@@ -15,7 +15,7 @@ class App extends Component {
             <section id="content">
               <div id="wrapper">
                 <div id="content_inside">
-                	<div id="main_block" class="style1">
+                	<div id="main_block" className="style1">
                   <Content />
                   </div>
                 </div>
