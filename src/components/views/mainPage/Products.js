@@ -1,11 +1,16 @@
 import React , {Component} from 'react'
 import productsListJson from '../../JsonFiles/Products';
 import ProductList from './ProductList'
+import AuthService from '../../AuthService';
+//import { LocalStorage } from "node-localstorage";
+
+//global.localStorage = new LocalStorage('./scratch');
 
 class Products extends Component {
 
   constructor(props) {
     super();
+    this.Auth = new AuthService();
 
     this.state = {
       products : []
@@ -15,17 +20,21 @@ class Products extends Component {
 
 getProductsList = (productsListJson)=>{
 
-  if(!localStorage.ProductsLocal){
+  if(!localStorage.getItem('ProductsLocal')){
     let productsAsArray = Object.keys(productsListJson).map((pid)=>
                     productsListJson[pid]);
-    localStorage.ProductsLocal= JSON.stringify(productsAsArray);
+    localStorage.setItem('ProductsLocal',JSON.stringify(productsAsArray));
   }
-  var parseProducts = JSON.parse(localStorage.ProductsLocal);
+  var parseProducts = JSON.parse(localStorage.getItem('ProductsLocal'));
   return parseProducts;
 
 }
 
   componentWillMount(){
+    
+    if(!this.Auth.loggedIn())
+        this.props.history.replace('/');
+
     var prod = [];
     prod = this.getProductsList(productsListJson);
 
@@ -36,7 +45,7 @@ getProductsList = (productsListJson)=>{
 
   changeProducts = (products)=>{
     this.setState(products);
-      localStorage.ProductsLocal = JSON.stringify(products);
+      localStorage.setItem('ProductsLocal', JSON.stringify(products));
   }
 
     render() {

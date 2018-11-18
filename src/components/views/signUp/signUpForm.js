@@ -104,7 +104,7 @@ class SignUpForm extends Component {
       //check the data if the user alrealy authenticated
     checkUser = this.checkUsersDataBase(data);
 
-    //check if all is good and then add the new user and go to sign in 
+    //check if all is good and then add the new user and go to sign in
 
     if(!FormIsGood){
       alert('alert: Please check your informations, something is wrong');
@@ -144,7 +144,7 @@ class SignUpForm extends Component {
               <label htmlFor="password" className="sr-only">Password &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
               <input type="password" name="confirmPassword" id="pass_conf" className="form-control" placeholder="Confirme your Password" required="" /><br/><br/>
               <button style ={{width:100, marginLeft:120, backgroundColor:'gray', color:'white'}} >Sign Up</button><br/><br/>
-              <NavLink exact  className="signUp" to ="/">Sign In</NavLink >
+              <NavLink exact  className="signIn" to ="/">Sign In</NavLink >
             </form>
 
     );

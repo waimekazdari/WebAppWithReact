@@ -2,10 +2,16 @@ import React , {Component} from 'react'
 import SignUpForm from './signUpForm'
 import countries from '../../JsonFiles/countries'
 import users from '../../JsonFiles/Users'
+import AuthService from '../../AuthService';
+//import { LocalStorage } from "node-localstorage";
+
+//global.localStorage = new LocalStorage('./scratch');
+
 class SignUp extends Component {
 
   constructor(props){
     super(props);
+    this.Auth = new AuthService();
     this.state = {
       contries: [],
       users: []
@@ -14,30 +20,34 @@ class SignUp extends Component {
 
   getUsersList = (usersJson)=>{
 
-        if(!localStorage.usersLocal){
+        if(!localStorage.getItem('usersLocal')){
           let usersAsArray = Object.keys(users).map((pid)=>
                           users[pid]);
-          localStorage.usersLocal= JSON.stringify(usersAsArray);
+          localStorage.setItem('usersLocal',JSON.stringify(usersAsArray));
         }
-        var parseUsers = JSON.parse(localStorage.usersLocal);
+        var parseUsers = JSON.parse(localStorage.getItem('usersLocal'));
         return parseUsers;
     }
 
   componentWillMount(){
+      if(this.Auth.loggedIn())
+            this.props.history.replace('/mainPage');
+
+
     var usersTab = [];
     usersTab = this.getUsersList(users);
     let countriesAsArray = Object.keys(countries).map((pid)=>
-                    countries[pid]);
+              countries[pid]);
       this.setState({
         countries:countriesAsArray,
         users:usersTab
       });
-      //console.log(usersTab);
+
   }
 
   //push the new user into localStorage
   handleUserData = (usersData)=>{
-    localStorage.usersLocal=JSON.stringify(usersData);
+    localStorage.setItem('usersLocal',JSON.stringify(usersData));
     }
 
 

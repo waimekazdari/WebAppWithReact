@@ -3,15 +3,31 @@ import '../styles/style.css';
 import Footer from './views/Footer';
 import Header from './views/Header';
 import Content from './Content';
+import AuthService from './AuthService';
+import withAuth from './withAuth';
+import PropTypes from 'prop-types'
 
-
+const Auth = new AuthService();
 class App extends Component {
+  constructor(props){
+    super(props);
+  }
+
+  static contextTypes = {
+       router: PropTypes.object
+     }
+
+    handleLogout = ()=>{
+        Auth.logout()
+        this.context.router.history.push(`/`)
+        //this.props.history.replace('/');
+      }
 
   render() {
 
     return (
           <div>
-            <Header />
+            <Header handleLogout = {this.handleLogout}  />
             <section id="content">
               <div id="wrapper">
                 <div id="content_inside">
@@ -27,4 +43,5 @@ class App extends Component {
   }
 }
 
+//export default withAuth(App);
 export default App;
