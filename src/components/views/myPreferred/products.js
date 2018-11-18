@@ -27,8 +27,6 @@ class Products extends Component {
 
   changePreferredProd = (products)=>{
     this.setState(products);
-    console.log(30);
-    console.log(products);
     var toParse = [];
     toParse =JSON.parse(localStorage.PreferredProdLocal);
     toParse[0].products = products;

@@ -15,7 +15,7 @@ class ProductList extends Component {
   }
 
 
-  dislikeFunction = (event)=>{
+  RemoveFunction = (event)=>{
     //var index = this.state.index;
     var index = event.target.id;
     //console.log(id);
@@ -43,7 +43,7 @@ class ProductList extends Component {
       rows.push(
       <div className="item" key={index}>
         <img src={require('../../../images/'+product.image+'.jpg')} alt="" width="202" height="173" /><br />
-        <span>{product.price}</span><button   className="dislike" id = {index} onClick={this.dislikeFunction}>Remove</button>
+        <span>{product.price}</span><button   className="dislike" id = {index} onClick={this.RemoveFunction}>Remove</button>
       </div>
 
       );
