@@ -25,9 +25,32 @@ login = (email, password)=>{
       password
     })
   }).then(res => {
-    this.setToken(res.token)
+    this.setToken(res.token);
+    this.setUserId(res.users_id);
+    console.log('user id : '+JSON.parse(localStorage.getItem('user_id')));
     return Promise.resolve(res);
   })
+}
+
+signup = (userData)=>{
+  return this.fetch(`${this.domain}/signUp`, {
+    method: 'POST',
+    body: JSON.stringify(userData)
+  }).then(res => {
+    this.setToken(res.token);
+    console.log('user id: '+res.users_id);
+    this.setUserId(res.users_id);
+    return Promise.resolve(res);
+  })
+}
+//function to creat a localStorage for user's Id
+setUserId = (usersId)=>{
+  localStorage.setItem('user_id',JSON.stringify(usersId));
+}
+
+// function to remove user's Id from localStorage
+removeUserId = ()=>{
+  localStorage.removeItem('user_id');
 }
 
 loggedIn(){
@@ -61,12 +84,15 @@ isTokenExpired(token){
     return localStorage.getItem('id_token');
   }
 
+
   logout = ()=>{
     console.log("inside logout");
     // Clear user token and profile data from localStorage
      console.log(localStorage.getItem('id_token'));
+     //remove user's id when he/she had deconnected
        localStorage.removeItem('id_token');
-       console.log(localStorage.getItem('id_token'));
+       this.removeUserId();
+       //console.log(localStorage.getItem('id_token'));
   }
 
   getProfile = ()=>{
