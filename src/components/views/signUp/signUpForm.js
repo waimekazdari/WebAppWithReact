@@ -17,8 +17,8 @@ class SignUpForm extends Component {
        router: PropTypes.object
      }
 
-  handleUserDataa = (users)=>{
-    this.props.handleUserData(users);
+  handleUserDataa = (newUser, allUsers)=>{
+    this.props.handleUserData(newUser, allUsers);
   }
 
   handleForm = (data)=>{
@@ -58,42 +58,40 @@ class SignUpForm extends Component {
   AddUser = (data)=>{
     var objUser;
     var lastUserId;
-    var distance;
     var newId;
     var newEmail;
     var newDistance;
     var countries =this.state.countries;
     var users = this.state.users;
+    //var country=data.get('countries');
     //check the last user id in the database
     lastUserId = users[users.length-1].id;
 
     //retrieve the distance of user's country
-    countries.map((country)=>{
+    /*countries.map((country)=>{
       if(country.label === data.get('countries')){
         distance = country.distance;
       }
-    });
+    });*/
 
     // the user object to add
-    objUser = {
-      id:lastUserId+1,
-      email:data.get('useremail'),
-      password: data.get('password'),
-      distance: distance
-    };
+    objUser = {id:lastUserId+1,email:data.get('useremail'),password: data.get('password'),country: data.get('countries')};
 
     //Add the new User to Users table
     users.push(objUser);
-
+    var newUser = [];
+    console.log(users);
+    //newUser= JSON.parse(objUser);
+    //objUser =
     //update users table
     this.state.users = users;
     // update the users list in localstorage by calling the parent function
-    this.handleUserDataa(users);
+    this.handleUserDataa(objUser, users);
   }
 
 
   handleSubmit = (event)=>{
-    var checkUser;
+  //  var checkUser;
     var FormIsGood;
 
       event.preventDefault();
@@ -102,19 +100,15 @@ class SignUpForm extends Component {
       //check the form
     FormIsGood = this.handleForm(data);
       //check the data if the user alrealy authenticated
-    checkUser = this.checkUsersDataBase(data);
+    //checkUser = this.checkUsersDataBase(data);
 
     //check if all is good and then add the new user and go to sign in
 
     if(!FormIsGood){
       alert('alert: Please check your informations, something is wrong');
-    }else if (checkUser) {
-      alert('alert: You are already authenticated');
     }else{
       //addthe new User
       this.AddUser(data);
-        //redirect to sign In component
-       this.context.router.history.push(`/`);
     }
 
   }
