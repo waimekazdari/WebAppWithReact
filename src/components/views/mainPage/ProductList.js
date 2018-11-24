@@ -1,35 +1,52 @@
 import React , {Component} from 'react'
-//import Products from '../JsonFiles/Products';
-//import myPreferred from './myPreferred/products';
+import AuthService from '../../AuthService';
 class ProductList extends Component {
 
   constructor(props){
     super(props);
+    this.Auth = new AuthService();
     this.state = {
-      products: this.props.products,
-      prodToAdd : {}
+      products: null,
+      userProductsId : null
     }
       }
 
-  changeProd = (prod)=>{
-    this.props.changeProducts(prod);
+    componentWillMount(){
+          this.setState({
+            products: this.props.products,
+            userProductsId : this.props.userProductsId
+          })
+        }
+
+  changePreferredProd = (userProductsId)=>{
+    this.props.changePreferredProd(userProductsId);
   }
 
   likeFunction = (event)=>{
+    if(this.Auth.loggedIn()){
     var id = event.target.id;
+    var userProductsId = this.state.userProductsId;
+    userProductsId.push(parseInt(id));
+    console.log(userProductsId);
+    this.setState(userProductsId);
+    //var preffProducts = this.state.preffProducts;
     //console.log(id);
-    var products = this.state.products;
+  /*  var products = this.state.products;
     var prodToAdd = this.state.prodToAdd;
     products.map((product) =>{
       //console.log(product);
-      if(product.id === id){
+      if(product.id == id){
+      //  console.log(product);
         prodToAdd=product;
-      //  console.log(prodToAdd);
+        this.state.prodToAdd = prodToAdd;
         products.push(prodToAdd);
         this.setState(products);
       }
-    });
-    this.changeProd(products);
+    });*/
+    this.changePreferredProd(userProductsId);
+  }else {
+    alert('Login Please');
+  }
   }
 
   render() {
