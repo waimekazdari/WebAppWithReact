@@ -8,7 +8,7 @@ class Footer extends Component {
           <div id="footer">
             <div id="footer_inside">
               <ul className="footer_menu">
-              <li><NavLink to ="/">Nearby Shops</NavLink ></li>
+              <li><NavLink to ="/"> Nearby Shops </NavLink ></li>
               <li><NavLink to ="/myPreferred"  >my preferred</NavLink ></li>
               </ul>
               </div>
