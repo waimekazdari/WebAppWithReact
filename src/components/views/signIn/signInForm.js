@@ -32,7 +32,7 @@ handleFormSubmit = (event)=>{
 
     return(
       <form onSubmit = {this.handleFormSubmit}>
-        <h2 className="form-signin-heading"> Please Sign Up </h2><br/><br/>
+        <h2 className="form-signin-heading"> Please Sign In </h2><br/><br/>
         <label htmlFor="useremail" className="sr-only"> Email &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         <input id="useremail" name="useremail" className="form-control" placeholder="Enter Your Email" required="" autoFocus="" /><br/><br/><br/>
         <label htmlFor="password" className="sr-only">Password &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
