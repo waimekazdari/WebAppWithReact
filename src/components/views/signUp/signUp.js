@@ -66,6 +66,9 @@ class SignUp extends Component {
     //create the preferred list object for the new user
     this.CreatPreferredList(newUser);
 
+    //create the disliked list for the new user
+    this.CreatDislikedList(newUser);
+
     this.Auth.signup(newUser)
       .then(res =>{
         this.props.history.replace('/mainPage');
@@ -90,6 +93,23 @@ class SignUp extends Component {
 
       }
     }
+
+    
+          //function to create the disliked list for the new user
+        CreatDislikedList = (newUser)=>{
+          var dislikedList = JSON.parse(localStorage.getItem('DislikedProdLocal'));
+          var newObject = {id_user:newUser.id,products:[]};
+          if(!dislikedList){
+            var tab = [];
+            tab.push(newObject);
+            localStorage.setItem('DislikedProdLocal',JSON.stringify(tab));
+
+          }else {
+            dislikedList.push(newObject);
+            localStorage.setItem('DislikedProdLocal',JSON.stringify(dislikedList));
+
+          }
+        }
 
   render() {
     var countries = this.state.countries;

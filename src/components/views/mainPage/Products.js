@@ -1,6 +1,7 @@
 import React , {Component} from 'react'
 import productsListJson from '../../JsonFiles/Products';
 import preferredProdJson from '../../JsonFiles/PreferredProd';
+import dislikedProdJson from '../../JsonFiles/DislikedProd';
 import ProductList from './ProductList'
 import AuthService from '../../AuthService';
 import Header from '../Header'
@@ -18,8 +19,10 @@ class Products extends Component {
 
     this.state = {
       products : [],
-      userProductsId: null,
-      userIndex: null
+      userProductsId: [],
+      userDislikedProductsId: [],
+      userIndex: null,
+      userDisIndex: null
     }
 
   }
@@ -36,12 +39,16 @@ class Products extends Component {
      }
 
   initComponent = ()=>{
+
     let user_id = null;
     var PreferredProducts = [];
+    var DislikedProducts = [];
     var AllProducts = [];
     var userProductsId = [];
+    var userDislikedProductsId = [];
     var ProductsToShow = [];
     var userIndex = 0;
+    var userDisIndex = 0;
 
     AllProducts =  this.getProductsList(productsListJson);
        if(this.Auth.loggedIn()){
@@ -52,7 +59,10 @@ class Products extends Component {
          // get the preferred products list of all users from the local storage using getPreferredProdList function
          PreferredProducts = this.getPreferredProdList(preferredProdJson);
 
-         // get the the preferred products list of the authenticated user
+         // get the preferred products list of all users from the local storage using getPreferredProdList function
+         DislikedProducts = this.getDislikedProdList(dislikedProdJson);
+
+         // get the preferred products list of the authenticated user
          PreferredProducts.map((PreProduct)=>{
            if(PreProduct.id_user === user_id){
                userProductsId = PreProduct.products;
@@ -64,13 +74,32 @@ class Products extends Component {
               userIndex ++;
          });
 
+         // get the disliked products list of the authenticated user
+         DislikedProducts.map((DisProduct)=>{
+           if(DisProduct.id_user === user_id){
+               userDislikedProductsId = DisProduct.products;
+               console.log('userDislikedProductsId: '+userDislikedProductsId);
+               this.setState({
+                 userDisIndex:userDisIndex
+               });
+              }
+              userDisIndex ++;
+         });
+
           for(var j = 0 ; j<AllProducts.length; j++){
             var exist = false;
+            //verify if the item is a preferred one for the user
              for(var i = 0; i<userProductsId.length; i ++){
                if(userProductsId[i] === AllProducts[j].id){
                  exist = true;
              }
            }
+           //verify if the item is disliked from the user
+           for(var i = 0; i<userDislikedProductsId.length; i ++){
+             if(userDislikedProductsId[i] === AllProducts[j].id){
+               exist = true;
+           }
+         }
            if(exist === false){
              console.log(AllProducts[j]);
              ProductsToShow.push(AllProducts[j]);
@@ -83,7 +112,8 @@ class Products extends Component {
 
          this.setState({
          products:ProductsToShow,
-         userProductsId: userProductsId
+         userProductsId: userProductsId,
+         userDislikedProductsId: userDislikedProductsId
        });
   }// end initComponent function
 
@@ -96,6 +126,19 @@ class Products extends Component {
        localStorage.setItem('PreferredProdLocal',JSON.stringify(productsAsArray));
      }
      var parseProducts = JSON.parse(localStorage.getItem('PreferredProdLocal'));
+     return parseProducts;
+
+   }
+
+   // function to get the list of the disliked list from local Storage
+   getDislikedProdList = (dislikedProdJson)=>{
+
+     if(!localStorage.getItem('DislikedProdLocal')){
+       let productsAsArray = Object.keys(dislikedProdJson).map((pid)=>
+                       preferredProdJson[pid]);
+       localStorage.setItem('DislikedProdLocal',JSON.stringify(productsAsArray));
+     }
+     var parseProducts = JSON.parse(localStorage.getItem('DislikedProdLocal'));
      return parseProducts;
 
    }
@@ -124,7 +167,7 @@ class Products extends Component {
   }*/
 
   // function for updating the list of preferred products
-  changePreferredProd = (userProductsId)=>{
+  handleLike = (userProductsId)=>{
     this.setState({userProductsId:userProductsId });
     var toParse = [];
     var userIndex = this.state.userIndex;
@@ -140,10 +183,28 @@ class Products extends Component {
       //this.forceUpdate();
   }
 
+  // function for updating the list of disliked products
+  handleDislike = (userDislikedProductsId)=>{
+    this.setState({userDislikedProductsId:userDislikedProductsId });
+    var toParse = [];
+    var userDisIndex = this.state.userDisIndex;
+    toParse =JSON.parse(localStorage.getItem('DislikedProdLocal'));
+    console.log('toParse');
+    console.log(toParse);
+    console.log(userDisIndex);
+    toParse[userDisIndex].products = userDislikedProductsId;
+    localStorage.setItem('DislikedProdLocal',JSON.stringify(toParse));
+    //just to refresh the page
+    this.props.history.replace('/');
+      //this.initComponent();
+      //this.forceUpdate();
+  }
+
 
     render() {
         var products = this.state.products;
         var userProductsId = this.state.userProductsId;
+        var userDislikedProductsId = this.state.userDislikedProductsId;
       return (
               <div>
               <Header
@@ -156,7 +217,9 @@ class Products extends Component {
                       <ProductList
                        products={products}
                        userProductsId = {userProductsId}
-                       changePreferredProd = {this.changePreferredProd}
+                       userDislikedProductsId = {userDislikedProductsId}
+                       handleLike = {this.handleLike}
+                       handleDislike = {this.handleDislike}
                        ></ProductList>
                  </div>
                </div>

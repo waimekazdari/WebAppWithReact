@@ -17,9 +17,63 @@ class SignUpForm extends Component {
        router: PropTypes.object
      }
 
+
+  handleSubmit = (event)=>{
+      //  var checkUser;
+        var FormIsGood;
+
+          event.preventDefault();
+          const data = new FormData(event.target);
+
+          //check the form
+        FormIsGood = this.handleForm(data);
+          //check the data if the user alrealy authenticated
+        //checkUser = this.checkUsersDataBase(data);
+
+        //check if all is good and then add the new user and go to sign in
+
+        if(!FormIsGood){
+          alert('alert: Please check your informations, something is wrong');
+        }else{
+          //addthe new User
+          this.AddUser(data);
+        }
+
+      }
+
+  // function to add user to Users Data file of users
+  AddUser = (data)=>{
+    var objUser;
+    var lastUserId;
+    var newId;
+    var newEmail;
+    var newDistance;
+    var countries =this.state.countries;
+    var users = this.state.users;
+
+    //check the last user id in the database
+    lastUserId = users[users.length-1].id;
+
+    // the user object to add
+    objUser = {id:lastUserId+1,email:data.get('useremail'),password: data.get('password'),country: data.get('countries')};
+
+    //Add the new User to Users table
+    users.push(objUser);
+    var newUser = [];
+    console.log(users);
+
+    //update users table
+    this.state.users = users;
+
+    // update the users list in localstorage by calling the parent function
+    this.handleUserDataa(objUser, users);
+  }
+
+
   handleUserDataa = (newUser, allUsers)=>{
     this.props.handleUserData(newUser, allUsers);
   }
+
 
   handleForm = (data)=>{
     var checkForm;
@@ -54,64 +108,6 @@ class SignUpForm extends Component {
     return checkUser;
   }
 
-  // function to add user to Users Data file of users
-  AddUser = (data)=>{
-    var objUser;
-    var lastUserId;
-    var newId;
-    var newEmail;
-    var newDistance;
-    var countries =this.state.countries;
-    var users = this.state.users;
-    //var country=data.get('countries');
-    //check the last user id in the database
-    lastUserId = users[users.length-1].id;
-
-    //retrieve the distance of user's country
-    /*countries.map((country)=>{
-      if(country.label === data.get('countries')){
-        distance = country.distance;
-      }
-    });*/
-
-    // the user object to add
-    objUser = {id:lastUserId+1,email:data.get('useremail'),password: data.get('password'),country: data.get('countries')};
-
-    //Add the new User to Users table
-    users.push(objUser);
-    var newUser = [];
-    console.log(users);
-    //newUser= JSON.parse(objUser);
-    //objUser =
-    //update users table
-    this.state.users = users;
-    // update the users list in localstorage by calling the parent function
-    this.handleUserDataa(objUser, users);
-  }
-
-
-  handleSubmit = (event)=>{
-  //  var checkUser;
-    var FormIsGood;
-
-      event.preventDefault();
-      const data = new FormData(event.target);
-
-      //check the form
-    FormIsGood = this.handleForm(data);
-      //check the data if the user alrealy authenticated
-    //checkUser = this.checkUsersDataBase(data);
-
-    //check if all is good and then add the new user and go to sign in
-
-    if(!FormIsGood){
-      alert('alert: Please check your informations, something is wrong');
-    }else{
-      //addthe new User
-      this.AddUser(data);
-    }
-
-  }
 
 
   render(){

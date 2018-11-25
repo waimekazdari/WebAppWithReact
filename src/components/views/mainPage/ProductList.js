@@ -7,21 +7,29 @@ class ProductList extends Component {
     this.Auth = new AuthService();
     this.state = {
       products: null,
-      userProductsId : null
+      userProductsId : null,
+      userDislikedProductsId : null
     }
       }
 
     componentWillMount(){
           this.setState({
             products: this.props.products,
-            userProductsId : this.props.userProductsId
+            userProductsId : this.props.userProductsId,
+            userDislikedProductsId: this.props.userDislikedProductsId
           })
         }
 
-  changePreferredProd = (userProductsId)=>{
-    this.props.changePreferredProd(userProductsId);
+  handleLike = (userProductsId)=>{
+    this.props.handleLike(userProductsId);
+    //this.props.changePreferredProd(userProductsId);
   }
 
+  handleDislike = (userProductsId)=>{
+    this.props.handleDislike(userProductsId);
+  }
+
+// handle like button
   likeFunction = (event)=>{
     if(this.Auth.loggedIn()){
     var id = event.target.id;
@@ -29,21 +37,32 @@ class ProductList extends Component {
     userProductsId.push(parseInt(id));
     console.log(userProductsId);
     this.setState(userProductsId);
-    //var preffProducts = this.state.preffProducts;
-    //console.log(id);
-  /*  var products = this.state.products;
-    var prodToAdd = this.state.prodToAdd;
-    products.map((product) =>{
-      //console.log(product);
-      if(product.id == id){
-      //  console.log(product);
-        prodToAdd=product;
-        this.state.prodToAdd = prodToAdd;
-        products.push(prodToAdd);
-        this.setState(products);
-      }
-    });*/
-    this.changePreferredProd(userProductsId);
+    this.handleLike(userProductsId);
+  }else {
+    alert('Login Please');
+  }
+  }
+
+// handle dislike button
+  dislikeFunction = (event)=>{
+    if(this.Auth.loggedIn()){
+    var index = event.target.key;
+    console.log('key index:'+index);
+    var id = event.target.id;
+    var userDislikedProductsId = this.state.userDislikedProductsId;
+    userDislikedProductsId.push(parseInt(id));
+    console.log('userDislikedProductsId:'+userDislikedProductsId);
+    this.setState(userDislikedProductsId);
+    this.handleDislike(userDislikedProductsId);
+    setTimeout(function() {
+      //7200000
+        //remove product from the disliked List after 2 hours
+        userDislikedProductsId.splice(index,1);
+        this.setState(userDislikedProductsId);
+        this.handleDislike(userDislikedProductsId);
+    }
+    .bind(this),
+    60000);
   }else {
     alert('Login Please');
   }
@@ -57,7 +76,7 @@ class ProductList extends Component {
       rows.push(
       <div className="item"  key={index}>
         <img src={require('../../../images/'+product.image+'.jpg')} alt="" width="202" height="173" /><br />
-        <span>{product.price}</span><button className="like" id = {product.id} onClick={this.likeFunction}>like</button> <button className="dislike">dislike</button>
+        <span>{product.price}</span><button className="like" id = {product.id} onClick={this.likeFunction}>like</button> <button className="dislike" id = {product.id} key={index} onClick={this.dislikeFunction}>dislike</button>
       </div>
       );
       index ++;
