@@ -76,7 +76,7 @@ class Products extends Component {
              ProductsToShow.push(AllProducts[j]);
            }
        }
-     }
+     }// end if authenticated
        else {
          ProductsToShow= this.getProductsList(productsListJson);
        }
@@ -85,7 +85,7 @@ class Products extends Component {
          products:ProductsToShow,
          userProductsId: userProductsId
        });
-  }
+  }// end initComponent function
 
      // function to get the list of the preferred list from local Storage
    getPreferredProdList = (preferredProdJson)=>{
