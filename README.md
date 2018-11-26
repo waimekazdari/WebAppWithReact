@@ -10,4 +10,4 @@ Functional of the app :
 
 To run this app :
 	step1 : npm install
-	step2 : node bin/www (http://localhost:3000/)
+	step2 : npm start (http://localhost:3000/)
