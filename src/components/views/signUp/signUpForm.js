@@ -45,10 +45,7 @@ class SignUpForm extends Component {
   AddUser = (data)=>{
     var objUser;
     var lastUserId;
-    var newId;
-    var newEmail;
-    var newDistance;
-    var countries =this.state.countries;
+    //var countries =this.state.countries;
     var users = this.state.users;
 
     //check the last user id in the database
@@ -59,11 +56,10 @@ class SignUpForm extends Component {
 
     //Add the new User to Users table
     users.push(objUser);
-    var newUser = [];
     console.log(users);
 
     //update users table
-    this.state.users = users;
+    this.setState(users);
 
     // update the users list in localstorage by calling the parent function
     this.handleUserDataa(objUser, users);

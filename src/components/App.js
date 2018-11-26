@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import '../styles/style.css';
 import Footer from './views/Footer';
-import Header from './views/Header';
 import Content from './Content';
-import AuthService from './AuthService';
-import withAuth from './withAuth';
 
 
-const Auth = new AuthService();
 class App extends Component {
   constructor(props){
     super(props);
@@ -19,8 +15,8 @@ class App extends Component {
 
 
     callBackFromComponents = (signIn, Logout)=>{
-      this.state.SignInBtn = signIn;
-      this.state.Logout = Logout;
+      this.setState({SignInBtn: signIn});
+      this.setState(Logout);
     }
 
 

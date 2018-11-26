@@ -20,8 +20,8 @@ handleFormSubmit = (event)=>{
   var password;
   email = data.get('useremail');
   password = data.get('password');
-  this.state.email = email;
-  this.state.password = password;
+  this.setState({email: email});
+  this.setState({password : password});
   // call the parent function
   this.props.handleFormSubmit(email,password);
 }

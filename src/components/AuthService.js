@@ -1,5 +1,5 @@
 import decode from 'jwt-decode';
-import React , {Component} from 'react'
+import {Component} from 'react'
 //import { LocalStorage } from 'node-localstorage';
 
 //global.localStorage = new LocalStorage('./scratch');

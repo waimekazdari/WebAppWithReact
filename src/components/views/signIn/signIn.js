@@ -35,8 +35,8 @@ class SignIn extends Component {
     var email = eml;
     var password = psswd;
 
-    this.state.email = email;
-    this.state.password = password;
+    this.setState({email:email});
+    this.setState({password:password});
 
     this.Auth.login(email, password)
       .then(res =>{
