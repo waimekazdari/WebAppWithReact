@@ -11,14 +11,18 @@ class ProductList extends Component {
       userDislikedProductsId : null
     }
       }
-
-    componentWillMount(){
+//https://reactjs.org/docs/react-component.html#unsafe_componentwillmount
+//This lifecycle was previously named componentWillMount.
+// That name will continue to work until version 17.
+//Use the rename-unsafe-lifecycles codemod to automatically update your components.
+    UNSAFE_componentWillMount(){
           this.setState({
             products: this.props.products,
             userProductsId : this.props.userProductsId,
             userDislikedProductsId: this.props.userDislikedProductsId
           })
         }
+
 
   handleLike = (userProductsId)=>{
     this.props.handleLike(userProductsId);
@@ -44,25 +48,53 @@ class ProductList extends Component {
   }
 
 // handle dislike button
-  dislikeFunction = (event)=>{
+   dislikeFunction = (event)=>{
     if(this.Auth.loggedIn()){
-    var index = event.target.key;
-    console.log('key index:'+index);
-    var id = event.target.id;
-    var userDislikedProductsId = this.state.userDislikedProductsId;
-    userDislikedProductsId.push(parseInt(id));
-    console.log('userDislikedProductsId:'+userDislikedProductsId);
-    this.setState(userDislikedProductsId);
-    this.handleDislike(userDislikedProductsId);
-    setTimeout(function() {
-      //7200000
-        //remove product from the disliked List after 2 hours
-        userDislikedProductsId.splice(index,1);
+      var id = event.target.id;
+      var userDislikedProductsId = this.state.userDislikedProductsId;
+      //var index = event.target.key;
+      userDislikedProductsId.push(parseInt(id));
+      console.log('userDislikedProductsId:'+userDislikedProductsId);
+      this.setState(userDislikedProductsId);
+      this.handleDislike(userDislikedProductsId);
+
+      /*await new Promise(resolve => setTimeout(resolve((id, userDislikedProductsId)=>{
+        console.log('lol');
+        var newList = [];
+        for (var i = 0 ; i < userDislikedProductsId.length ; i ++){
+          if( parseInt(id) !== userDislikedProductsId[i]){
+            newList.push(userDislikedProductsId[i]);
+          }
+        }
+        userDislikedProductsId = newList;
+
+        //userDislikedProductsId = [];
+
         this.setState(userDislikedProductsId);
         this.handleDislike(userDislikedProductsId);
-    }
-    .bind(this),
-    60000);
+      }), 6000));*/
+
+      setTimeout(function() {
+        //60000 7200000
+          //remove product from the disliked List after 2 hours
+
+          //userDislikedProductsId.splice(0,1);
+
+        /*  var newList = [];
+          for (var i = 0 ; i < userDislikedProductsId.length ; i ++){
+            if( parseInt(id) !== userDislikedProductsId[i]){
+              newList.push(userDislikedProductsId[i]);
+            }
+          }
+          userDislikedProductsId = newList;*/
+
+          userDislikedProductsId = [];
+
+          this.setState(userDislikedProductsId);
+          this.handleDislike(userDislikedProductsId);
+      }
+      .bind(this),
+      6000);
   }else {
     alert('Login Please');
   }
