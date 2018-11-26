@@ -75,7 +75,7 @@ class ProductList extends Component {
       }), 6000));*/
 
       setTimeout(function() {
-        //60000 7200000
+
           //remove product from the disliked List after 2 hours
 
           //userDislikedProductsId.splice(0,1);
@@ -94,7 +94,7 @@ class ProductList extends Component {
           this.handleDislike(userDislikedProductsId);
       }
       .bind(this),
-      6000);
+      7200000);
   }else {
     alert('Login Please');
   }
